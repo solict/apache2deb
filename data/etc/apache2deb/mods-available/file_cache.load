@@ -1,0 +1,2 @@
+# Depends: cache
+LoadModule file_cache_module /usr/lib64/httpd/modules/mod_file_cache.so

@@ -1,0 +1,1 @@
+LoadModule charset_lite_module /usr/lib64/httpd/modules/mod_charset_lite.so

@@ -1,0 +1,1 @@
+LoadModule dav_module /usr/lib64/httpd/modules/mod_dav.so

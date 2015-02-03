@@ -1,0 +1,1 @@
+LoadModule cgid_module /usr/lib64/httpd/modules/mod_cgid.so
