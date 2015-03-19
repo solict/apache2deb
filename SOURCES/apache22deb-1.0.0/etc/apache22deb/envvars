@@ -5,9 +5,9 @@ unset HOME
 
 # for supporting multiple apache2 instances
 if [ "${APACHE_CONFDIR##/etc/apache22deb-}" != "${APACHE_CONFDIR}" ] ; then
-        SUFFIX="-${APACHE_CONFDIR##/etc/apache22deb-}"
+	SUFFIX="-${APACHE_CONFDIR##/etc/apache22deb-}"
 else
-        SUFFIX=
+	SUFFIX=
 fi
 
 # Since there is no sane way to get the parsed apache2 config in scripts, some
@@ -15,6 +15,7 @@ fi
 # /etc/init.d/apache22deb, /etc/logrotate.d/apache22deb, etc.
 export APACHE_RUN_USER=apache
 export APACHE_RUN_GROUP=apache
+#export APACHE_PID_FILE=/var/run/apache2$SUFFIX.pid
 export APACHE_PID_FILE=/var/run/apache22deb$SUFFIX/apache2$SUFFIX.pid
 export APACHE_RUN_DIR=/var/run/apache22deb$SUFFIX
 export APACHE_LOCK_DIR=/var/lock/apache22deb$SUFFIX

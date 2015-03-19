@@ -4,3 +4,4 @@
 # in meta http-equiv or xml encoding tags.
 
 #AddDefaultCharset UTF-8
+AddDefaultCharset Off
