@@ -57,9 +57,9 @@ fi
 # have one, then status and fullstatus will not work.
 STATUSURL="http://localhost:80/server-status"
 
-# Source /etc/sysconfig/apache22deb for $HTTPD setting, etc.
-if [ -r /etc/sysconfig/apache22deb ]; then
-   . /etc/sysconfig/apache22deb
+# Source /etc/apache22deb/envvars for $HTTPD setting, etc.
+if [ -r /etc/apache22deb/envvars ]; then
+   . /etc/apache22deb/envvars
 fi
 
 #

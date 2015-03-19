@@ -15,17 +15,18 @@ fi
 # /etc/init.d/apache22deb, /etc/logrotate.d/apache22deb, etc.
 export APACHE_RUN_USER=apache
 export APACHE_RUN_GROUP=apache
-#export APACHE_PID_FILE=/var/run/apache2$SUFFIX.pid
-export APACHE_PID_FILE=/var/run/apache22deb$SUFFIX/apache2$SUFFIX.pid
+export APACHE_PID_FILE=/var/run/apache22deb$SUFFIX/apache22deb$SUFFIX.pid
 export APACHE_RUN_DIR=/var/run/apache22deb$SUFFIX
-export APACHE_LOCK_DIR=/var/lock/apache22deb$SUFFIX
+export APACHE_LOCK_DIR=/var/run/apache22deb$SUFFIX
+export APACHE_LOCK_FILE=/var/lock/subsys/apache22deb$SUFFIX
+export APACHE_CACHE_DIR=/var/cache/apache22deb$SUFFIX
 # Only /var/log/apache22deb is handled by /etc/logrotate.d/apache22deb.
 export APACHE_LOG_DIR=/var/log/apache22deb$SUFFIX
 
 ## The locale used by some modules like mod_dav
 export LANG=C
 ## Uncomment the following line to use the system default locale instead:
-#. /etc/default/locale
+#. /etc/sysconfig/i18n
 
 export LANG
 
@@ -41,3 +42,39 @@ export LANG
 ## If you would like to pass arguments to the web server, add them below
 ## to the APACHE_ARGUMENTS environment.
 #export APACHE_ARGUMENTS=''
+
+#
+# Original CentOS /etc/sysconfig/httpd
+#
+
+# Configuration file for the httpd service.
+
+#
+# The default processing model (MPM) is the process-based
+# 'prefork' model.  A thread-based model, 'worker', is also
+# available, but does not work with some modules (such as PHP).
+# The service must be stopped before changing this variable.
+#
+HTTPD=/usr/sbin/httpd.worker
+
+#
+# To pass additional options (for instance, -D definitions) to the
+# httpd binary at startup, set OPTIONS here.
+#
+OPTIONS="-d /etc/apache22deb -f /etc/apache22deb/apache2.conf"
+
+#
+# By default, the httpd process is started in the C locale; to 
+# change the locale in which the server runs, the HTTPD_LANG
+# variable can be set.
+#
+#HTTPD_LANG=C
+
+#
+# By default, the httpd process will create the file
+# /var/run/apache22deb/apache2.pid in which it records its process
+# identification number when it starts.  If an alternate location is
+# specified in httpd.conf (via the PidFile directive), the new
+# location needs to be reported in the PIDFILE.
+#
+PIDFILE=$APACHE_PID_FILE

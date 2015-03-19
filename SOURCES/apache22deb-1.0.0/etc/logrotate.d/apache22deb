@@ -10,4 +10,9 @@
 	postrotate
 		/sbin/service apache22deb reload > /dev/null 2>/dev/null || true
 	endscript
+	prerotate
+		if [ -d /etc/logrotate.d/httpd-prerotate ]; then \
+			run-parts /etc/logrotate.d/httpd-prerotate; \
+		fi; \
+	endscript
 }
