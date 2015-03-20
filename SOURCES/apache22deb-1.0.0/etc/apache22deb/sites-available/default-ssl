@@ -1,5 +1,6 @@
 <IfModule mod_ssl.c>
-<VirtualHost _default_:443>
+#<VirtualHost _default_:443>
+<VirtualHost *:443>
 	ServerAdmin webmaster@localhost
 
 	DocumentRoot /var/www/html
@@ -11,7 +12,7 @@
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
-		allow from all
+		Allow from all
 	</Directory>
 
 	ScriptAlias /cgi-bin/ /var/www/cgi-bin/

@@ -10,7 +10,7 @@
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
-		allow from all
+		Allow from all
 	</Directory>
 
 	ScriptAlias /cgi-bin/ /var/www/cgi-bin/

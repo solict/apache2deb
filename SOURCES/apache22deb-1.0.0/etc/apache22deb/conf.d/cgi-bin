@@ -1,0 +1,31 @@
+#
+# The CGI (Common Gateway Interface) defines a way for a web server to interact
+# with external content-generating programs, which are often referred to as CGI
+# programs or CGI scripts. It is the simplest, and most common, way to put
+# dynamic content on your web site.
+#
+
+#
+# This block enables global CGI support by defining a cgi-bin directory
+# for scripts.
+#
+ScriptAlias /cgi-bin/ /var/www/cgi-bin/
+<Directory "/var/www/cgi-bin">
+    AllowOverride None
+    #AllowOverride AuthConfig FileInfo
+    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+    #Options +ExecCGI -MultiViews +FollowSymLinks
+    Order allow,deny
+    Allow from all
+</Directory>
+
+#
+# To enable CGI scripting you will need to add ExecCGI to each virtual host.
+# Example for default virtual host:
+#
+#<Directory /var/www/html/>
+#    AllowOverride All
+#    Options Indexes FollowSymLinks -MultiViews +ExecCGI
+#    Order allow,deny
+#    Allow from All
+#</Directory>
