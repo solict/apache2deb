@@ -20,9 +20,6 @@
 #  implementing the current HTTP standards.
 ### END INIT INFO
 
-# Source function library.
-. /etc/rc.d/init.d/functions
-
 SCRIPTNAME="${0##*/}"
 SCRIPTNAME="${SCRIPTNAME##[KS][0-9][0-9]}"
 if [ -n "$APACHE_CONFDIR" ] ; then
@@ -52,7 +49,7 @@ if [ "$APACHE_ENVVARS" != "$APACHE_CONFDIR/envvars" ] ; then
 fi
 
 
-#edit /etc/default/apache22deb to change this.
+#edit /etc/sysconfig/apache22deb to change this.
 HTCACHECLEAN_RUN=auto
 HTCACHECLEAN_MODE=daemon
 HTCACHECLEAN_SIZE=300M
@@ -69,13 +66,16 @@ if [ ! -x $APACHE_HTTPD ] ; then
 	exit 0
 fi
 
-if [ -f /etc/default/apache22deb$DIR_SUFFIX ] ; then
-	. /etc/default/apache22deb$DIR_SUFFIX
-elif [ -f /etc/default/apache22deb ] ; then
-	. /etc/default/apache22deb
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+if [ -f /etc/sysconfig/apache22deb$DIR_SUFFIX ] ; then
+	. /etc/sysconfig/apache22deb$DIR_SUFFIX
+elif [ -f /etc/sysconfig/apache22deb ] ; then
+	. /etc/sysconfig/apache22deb
 fi
 
-APACHE2CTL="$ENV /usr/sbin/a2ctl"
+APACHE2CTL="$ENV /usr/sbin/apache22debctl"
 HTCACHECLEAN="$ENV /usr/sbin/htcacheclean"
 
 PIDFILE=$(. $APACHE_ENVVARS && echo $APACHE_PID_FILE)
@@ -102,15 +102,15 @@ log_progress_msg() {
 
 log_end_msg() {
 	case "$1" in
-		'succeed')
+		0)
 			success
 			echo
-			exit $2
+			exit $1
 		;;
-		'fail')
+		*)
 			failure
 			echo
-			exit $2
+			exit $1
 		;;
 	esac
 }
@@ -224,11 +224,11 @@ case $1 in
 			touch $LOCKFILE
 			if check_htcacheclean ; then
 				log_progress_msg htcacheclean
-				start_htcacheclean || log_end_msg 'fail' 1
+				start_htcacheclean || log_end_msg 1
 			fi
-                        log_end_msg 'succeed' 0
+                        log_end_msg 0
                 else
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                 fi
 	;;
 	stop)
@@ -241,9 +241,9 @@ case $1 in
 		fi
 		if apache_wait_stop; then
 			rm -f $LOCKFILE
-                        log_end_msg 'succeed' 0
+                        log_end_msg 0
                 else
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                 fi
 	;;
 	graceful-stop)
@@ -256,9 +256,9 @@ case $1 in
 		fi
 		if $APACHE2CTL graceful-stop; then
 			rm -f $LOCKFILE
-                        log_end_msg 'succeed' 0
+                        log_end_msg 0
                 else
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                 fi
 	;;
 	reload | force-reload | graceful)
@@ -267,31 +267,31 @@ case $1 in
                     log_progress_msg "apache22deb"
                     if ! $APACHE2CTL configtest > /dev/null 2>&1; then
                         $APACHE2CTL configtest || true
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                     fi
                     if $APACHE2CTL graceful $2 ; then
-                        log_end_msg 'succeed' 0
+                        log_end_msg 0
                     else
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                     fi
                 else
                     log_progress_msg "apache22deb not running"
-                    log_end_msg 'succeed' 0
+                    log_end_msg 0
                 fi
 	;;
 	configtest)
                 log_daemon_msg "Testing web server config"
                 if ! $APACHE2CTL configtest > /dev/null 2>&1; then
                     $APACHE2CTL configtest || true
-                    log_end_msg 'fail' 1
+                    log_end_msg 1
                 else
-                    log_end_msg 'succeed' 0
+                    log_end_msg 0
                 fi
 	;;
 	restart)
 		if ! $APACHE2CTL configtest > /dev/null 2>&1; then
 		    $APACHE2CTL configtest || true
-		    log_end_msg 'fail' 1
+		    log_end_msg 1
 		fi
 		if check_htcacheclean ; then
 			log_daemon_msg "Restarting web server" "htcacheclean"
@@ -302,45 +302,45 @@ case $1 in
 		fi
 		PID=$(pidof_apache) || true
 		if ! apache_wait_stop; then
-                        log_end_msg 'fail' 1 || true
+                        log_end_msg 1 || true
                 fi
                 rm -f $LOCKFILE
 		if $APACHE2CTL start; then
 			touch $LOCKFILE
 			if check_htcacheclean ; then
-				start_htcacheclean || log_end_msg 'fail' 1
+				start_htcacheclean || log_end_msg 1
 			fi
-                        log_end_msg 'succeed' 0
+                        log_end_msg 0
                 else
-                        log_end_msg 'fail' 1
+                        log_end_msg 1
                 fi
 	;;
 	start-htcacheclean)
 		log_daemon_msg "Starting htcacheclean"
-		start_htcacheclean || log_end_msg 'fail' 1
-		log_end_msg 'succeed' 0
+		start_htcacheclean || log_end_msg 1
+		log_end_msg 0
 	;;
 	stop-htcacheclean)
 		log_daemon_msg "Stopping htcacheclean"
 			stop_htcacheclean
-			log_end_msg 'succeed' 0
+			log_end_msg 0
 	;;
 	status)
 		PID=$(pidof_apache) || true
 		if [ -n "$PID" ]; then
 			echo "Apache2$DIR_SUFFIX is running (pid $PID)."
-			log_end_msg 'succeed' 0
+			log_end_msg 0
 		else
 			echo "Apache2$DIR_SUFFIX is NOT running."
 			if [ -e "$PIDFILE" ]; then
-				log_end_msg 'fail' 1
+				log_end_msg 1
 			else
-				log_end_msg 'fail' 3
+				log_end_msg 3
 			fi
 		fi
 	;;
 	*)
 		log_success_msg "Usage: /etc/init.d/apache22deb$DIR_SUFFIX {start|stop|graceful-stop|restart|reload|force-reload|start-htcacheclean|stop-htcacheclean|status}"
-		log_end_msg 'fail' 2
+		log_end_msg 2
 	;;
 esac

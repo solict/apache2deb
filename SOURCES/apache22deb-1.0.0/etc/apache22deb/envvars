@@ -1,4 +1,4 @@
-# envvars - default environment variables for apache2ctl
+# envvars - default environment variables for apache22debctl
 
 # this won't be correct after changing uid
 unset HOME
@@ -11,7 +11,7 @@ else
 fi
 
 # Since there is no sane way to get the parsed apache2 config in scripts, some
-# settings are defined via environment variables and then used in apache2ctl,
+# settings are defined via environment variables and then used in apache22debctl,
 # /etc/init.d/apache22deb, /etc/logrotate.d/apache22deb, etc.
 export APACHE_RUN_USER=apache
 export APACHE_RUN_GROUP=apache
@@ -27,54 +27,25 @@ export APACHE_LOG_DIR=/var/log/apache22deb$SUFFIX
 export LANG=C
 ## Uncomment the following line to use the system default locale instead:
 #. /etc/sysconfig/i18n
-
 export LANG
 
-## The command to get the status for 'apache2ctl status'.
+## The command to get the status for 'apache22debctl status'.
 ## Some packages providing 'www-browser' need '--dump' instead of '-dump'.
-#export APACHE_LYNX='www-browser -dump'
+#export APACHE_LYNX='/usr/bin/links -dump'
 
 ## If you need a higher file descriptor limit, uncomment and adjust the
 ## following line (default is 8192):
 #APACHE_ULIMIT_MAX_FILES='ulimit -n 65536'
 
-
 ## If you would like to pass arguments to the web server, add them below
 ## to the APACHE_ARGUMENTS environment.
-#export APACHE_ARGUMENTS=''
+#export APACHE_ARGUMENTS='-d /etc/apache22deb -f /etc/apache22deb/apache2.conf'
 
-#
-# Original CentOS /etc/sysconfig/httpd
-#
-
-# Configuration file for the httpd service.
-
-#
-# The default processing model (MPM) is the process-based
-# 'prefork' model.  A thread-based model, 'worker', is also
-# available, but does not work with some modules (such as PHP).
-# The service must be stopped before changing this variable.
-#
-HTTPD=/usr/sbin/httpd.worker
-
-#
-# To pass additional options (for instance, -D definitions) to the
-# httpd binary at startup, set OPTIONS here.
-#
-OPTIONS="-d /etc/apache22deb -f /etc/apache22deb/apache2.conf"
-
-#
-# By default, the httpd process is started in the C locale; to 
-# change the locale in which the server runs, the HTTPD_LANG
-# variable can be set.
-#
-#HTTPD_LANG=C
-
-#
-# By default, the httpd process will create the file
-# /var/run/apache22deb/apache2.pid in which it records its process
-# identification number when it starts.  If an alternate location is
-# specified in httpd.conf (via the PidFile directive), the new
-# location needs to be reported in the PIDFILE.
-#
-PIDFILE=$APACHE_PID_FILE
+# The default processing model (MPM) is the process-based 'prefork' model.
+# A thread-based model, 'worker', is also available, but does not work with
+# some modules (such as PHP). An experimental thread-based model 'event' is
+# available as well. It is similar to 'worker', but uses a dedicated thread
+# to deal with the kept-alive connections.
+#export APACHE_HTTPD=/usr/sbin/httpd
+#export APACHE_HTTPD=/usr/sbin/httpd.event
+#export APACHE_HTTPD=/usr/sbin/httpd.worker
