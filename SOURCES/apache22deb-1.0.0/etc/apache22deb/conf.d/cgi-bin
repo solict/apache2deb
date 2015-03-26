@@ -9,15 +9,15 @@
 # This block enables global CGI support by defining a cgi-bin directory
 # for scripts.
 #
-ScriptAlias /cgi-bin/ /var/www/cgi-bin/
-<Directory "/var/www/cgi-bin">
-    AllowOverride None
-    #AllowOverride AuthConfig FileInfo
-    Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
-    #Options +ExecCGI -MultiViews +FollowSymLinks
-    Order allow,deny
-    Allow from all
-</Directory>
+#ScriptAlias /cgi-bin/ /var/www/cgi-bin/
+#<Directory "/var/www/cgi-bin">
+#    #AllowOverride None
+#    AllowOverride AuthConfig FileInfo
+#    #Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+#    Options +ExecCGI -MultiViews +FollowSymLinks
+#    Order allow,deny
+#    Allow from all
+#</Directory>
 
 #
 # To enable CGI scripting you will need to add ExecCGI to each virtual host.
@@ -25,6 +25,7 @@ ScriptAlias /cgi-bin/ /var/www/cgi-bin/
 #
 #<Directory /var/www/html/>
 #    AllowOverride All
+#    #Options Indexes SymLinksIfOwnerMatch -MultiViews +ExecCGI
 #    Options Indexes FollowSymLinks -MultiViews +ExecCGI
 #    Order allow,deny
 #    Allow from All
