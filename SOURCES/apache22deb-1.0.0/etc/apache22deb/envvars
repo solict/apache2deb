@@ -39,6 +39,7 @@ export LANG
 
 ## If you would like to pass arguments to the web server, add them below
 ## to the APACHE_ARGUMENTS environment.
+## Extra arguments available: php5_fcgid, php5_fastcgi, php5_fpm
 #export APACHE_ARGUMENTS='-d /etc/apache22deb -f /etc/apache22deb/apache2.conf'
 
 # The default processing model (MPM) is the process-based 'prefork' model.
