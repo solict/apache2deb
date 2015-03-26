@@ -1,0 +1,74 @@
+###############################################################################
+# Example vhost with PHP support                                              #
+###############################################################################
+<VirtualHost *:80>
+  ServerName example.com
+  ServerAlias www.example.com
+  ServerAdmin hostmaster@example.com
+
+  ErrorLog /var/log/httpd/example-error.log
+  CustomLog /var/log/httpd/example-access.log combined
+
+  DocumentRoot /var/www/example
+  DirectoryIndex index.html index.htm index.php
+
+  #############################################################################
+  # mod_fcgid + PHP-CGI                                                       #
+  #############################################################################
+  <IfDefine php5_fcgid>
+  <IfModule fcgid_module>
+
+  # The given command is used to spawn FCGI server processes
+  FcgidWrapper /var/www/example/cgi-bin/php5-fcgid .php
+
+  </IfModule>
+  </IfDefine>
+
+  #############################################################################
+  # mod_fastcgi + PHP-CGI                                                     #
+  #############################################################################
+  <IfDefine php5_fastcgi>
+  <IfModule fastcgi_module>
+
+  <IfModule alias_module>
+  # Create a script alias for the wrapper (file must exist!)
+  ScriptAlias /php5-fastcgi "/var/www/example/cgi-bin/php5-fastcgi"
+  </IfModule>
+
+  </IfModule>
+  </IfDefine>
+
+  #############################################################################
+  # mod_fastcgi + PHP-FPM                                                     #
+  #############################################################################
+  <IfDefine php5_fpm>
+  <IfModule fastcgi_module>
+
+  # Define which server will receive requests via tcp or socket connection
+  #FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -host 127.0.0.1:9000 -pass-header Authorization
+  FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -socket /var/run/php-fpm/php-fpm-example.sock -pass-header Authorization
+
+  <IfModule alias_module>
+  # Create a alias for the wrapper (file can not exist!)
+  Alias /php5-fpm "/var/www/example/cgi-bin/php5-fpm"
+  </IfModule>
+
+  </IfModule>
+  </IfDefine>
+
+  #############################################################################
+  # Docroot                                                                   #
+  #############################################################################
+  <Directory "/var/www/example">
+
+    # Set Options and Overrides
+    AllowOverride All Options=Indexes,SymLinksIfOwnerMatch,FollowSymLinks
+    Options -Indexes +FollowSymlinks +ExecCGI
+
+    # Set Access rules
+    Order allow,deny
+    Allow from all
+
+  </Directory>
+
+</VirtualHost>
