@@ -4,20 +4,20 @@
 	ServerName localhost
 	ServerAdmin webmaster@localhost
 
-	DocumentRoot /var/www/html
+	DocumentRoot /var/www/default/public_html
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory /var/www/html/>
+	<Directory "/var/www/default/public_html">
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
 		Allow from all
 	</Directory>
 
-	ScriptAlias /cgi-bin/ /var/www/cgi-bin/
-	<Directory "/var/www/cgi-bin">
+	ScriptAlias /cgi-bin/ "/var/www/default/cgi-bin"
+	<Directory "/var/www/default/cgi-bin">
 		AllowOverride None
 		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
 		Order allow,deny
@@ -127,7 +127,7 @@
 	<FilesMatch "\.(cgi|shtml|phtml|php)$">
 		SSLOptions +StdEnvVars
 	</FilesMatch>
-	<Directory /var/www/cgi-bin>
+	<Directory "/var/www/default/cgi-bin">
 		SSLOptions +StdEnvVars
 	</Directory>
 

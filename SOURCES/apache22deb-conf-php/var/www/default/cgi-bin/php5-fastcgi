@@ -1,5 +1,5 @@
 #!/bin/bash
-umask 022  
+umask 022
 PHPRC=/etc/php.ini
 PHP_CGI=/usr/bin/php-cgi
 PHP_FCGI_CHILDREN=4

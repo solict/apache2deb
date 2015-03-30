@@ -9,7 +9,7 @@
   ErrorLog /var/log/httpd/example-error.log
   CustomLog /var/log/httpd/example-access.log combined
 
-  DocumentRoot /var/www/example
+  DocumentRoot /var/www/example/public_html
   DirectoryIndex index.html index.htm index.php
 
   #############################################################################
@@ -59,7 +59,7 @@
   #############################################################################
   # Docroot                                                                   #
   #############################################################################
-  <Directory "/var/www/example">
+  <Directory "/var/www/example/public_html">
 
     # Set Options and Overrides
     AllowOverride All Options=Indexes,SymLinksIfOwnerMatch,FollowSymLinks
