@@ -1,0 +1,6 @@
+#!/bin/bash
+umask 022
+PHPRC=/etc/php.ini
+PHP_CGI=/usr/bin/php-cgi
+export PHPRC
+exec $PHP_CGI

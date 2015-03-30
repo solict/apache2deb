@@ -25,13 +25,27 @@
   </IfDefine>
 
   #############################################################################
+  # mod_cgi + PHP-CGI                                                         #
+  #############################################################################
+  <IfDefine php5_cgi>
+  <IfModule cgi_module>
+
+  # Create a script alias for the wrapper (file must exist!)
+  <IfModule alias_module>
+  ScriptAlias /php5-cgi "/var/www/example/cgi-bin/php5-cgi"
+  </IfModule>
+
+  </IfModule>
+  </IfDefine>
+
+  #############################################################################
   # mod_fastcgi + PHP-CGI                                                     #
   #############################################################################
   <IfDefine php5_fastcgi>
   <IfModule fastcgi_module>
 
-  <IfModule alias_module>
   # Create a script alias for the wrapper (file must exist!)
+  <IfModule alias_module>
   ScriptAlias /php5-fastcgi "/var/www/example/cgi-bin/php5-fastcgi"
   </IfModule>
 
@@ -48,8 +62,8 @@
   #FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -host 127.0.0.1:9000 -pass-header Authorization
   FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -socket /var/run/php-fpm/php-fpm-example.sock -pass-header Authorization
 
-  <IfModule alias_module>
   # Create a alias for the wrapper (file can not exist!)
+  <IfModule alias_module>
   Alias /php5-fpm "/var/www/example/cgi-bin/php5-fpm"
   </IfModule>
 
