@@ -18,8 +18,16 @@
   <IfDefine php5_fcgid>
   <IfModule fcgid_module>
 
-  # The given command is used to spawn FCGI server processes
+  # Command to be used to spawn FCGI server processes
   FcgidWrapper /var/www/example/cgi-bin/php5-fcgid .php
+
+  # Set processing options for the FastCGI command (affects PHP execution)
+  FcgidCmdOptions /var/www/example/cgi-bin/php5-fcgid \
+    IOTimeout 30 \
+    MaxRequestsPerProcess 1000
+
+  # Maximum HTTP request length in bytes (affects PHP post_max_size)
+  FcgidMaxRequestLen 8388608
 
   </IfModule>
   </IfDefine>
@@ -44,6 +52,10 @@
   <IfDefine php5_fastcgi>
   <IfModule fastcgi_module>
 
+  # Configure the internal server which will receive requests (affects PHP execution)
+  FastCgiServer /var/www/example/cgi-bin/php5-fastcgi \
+    -idle-timeout 30
+
   # Create a script alias for the wrapper (file must exist!)
   <IfModule alias_module>
   ScriptAlias /php5-fastcgi "/var/www/example/cgi-bin/php5-fastcgi"
@@ -58,9 +70,16 @@
   <IfDefine php5_fpm>
   <IfModule fastcgi_module>
 
-  # Define which server will receive requests via tcp or socket connection
-  #FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -host 127.0.0.1:9000 -pass-header Authorization
-  FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm -socket /var/run/php-fpm/php-fpm-example.sock -pass-header Authorization
+  # Configure the external server which will receive requests, via tcp or socket
+  # connections (affects PHP execution). Configure this in PHP-FPM.
+  #FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm \
+  #  -idle-timeout 30 \
+  #  -pass-header Authorization \
+  #  -host 127.0.0.1:9000
+  FastCgiExternalServer /var/www/example/cgi-bin/php5-fpm \
+    -idle-timeout 30 \
+    -pass-header Authorization \
+    -socket /var/run/php-fpm/php-fpm-example.sock
 
   # Create a alias for the wrapper (file can not exist!)
   <IfModule alias_module>
