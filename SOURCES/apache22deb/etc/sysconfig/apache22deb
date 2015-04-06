@@ -1,7 +1,7 @@
 ### htcacheclean settings ###
 
 ## run htcacheclean: yes, no, auto
-## auto means run if /etc/apache2/mods-enabled/disk_cache.load exists
+## auto means run if /etc/apache22deb/mods-enabled/disk_cache.load exists
 ## default: auto
 HTCACHECLEAN_RUN=auto
 
