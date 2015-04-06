@@ -166,7 +166,7 @@ restart|graceful)
     ;;
 startssl|sslstart|start-SSL)
     echo The startssl option is no longer supported.
-    echo Please edit httpd.conf to include the SSL configuration settings
+    echo Please edit the configuration to include the SSL settings
     echo and then use "apache22debctl start".
     ERROR=2
     ;;
