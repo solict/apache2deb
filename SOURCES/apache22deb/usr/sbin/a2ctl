@@ -174,7 +174,7 @@ configtest)
     echo "Binary:    ${HTTPD}"
     echo "Arguments: ${APACHE_ARGUMENTS}"
     echo "Log dir:   ${APACHE_LOG_DIR}"
-    echo "Log dir:   ${APACHE_RUN_DIR}"
+    echo "Run dir:   ${APACHE_RUN_DIR}"
     echo "PID file:  ${APACHE_PID_FILE}"
     echo
     testconfig
